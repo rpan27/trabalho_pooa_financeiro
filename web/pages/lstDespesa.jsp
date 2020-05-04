@@ -12,13 +12,14 @@
                     <div id="dvExclusao" name="dvExclusao" >&nbsp;</div>    
                 </div>
                 <div class="card-tools">
+                <form action="#" method="post" id="formPesq">     
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
+                    <input type="text" id="table_search" name="table_search" class="form-control float-right" placeholder="Search">
                     <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                    </div>
+                      <button type="submit" name="btnPesq" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>                          
                   </div>
+                </form>
                 </div>
               </div>
               <!-- /.card-header -->              
@@ -63,6 +64,31 @@
         </div>
         <!-- /.row -->
 <script> 
+ 
+$('#btnPesq').on("click", function () {        
+        alert($("#formPesq").serialize());
+        $.ajax({
+            type: "GET",
+            url: "app?"+$("#formPesq").serialize(),
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("SUCCESS : ", data);
+                $("#table").html(data);
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4>&lt;pre&gt;"
+                        + e.responseText + "&lt;/pre&gt;";
+                //$('#feedback').html(json);
+
+                console.log("ERROR : ", json);
+                console.log("ERROR : ", e);
+                alert("Nao conseguimos pesquisar Despesas")
+
+            }
+        });
+    });
        
     $('a[id*="opDel"]').on("click", function () {
             $.ajax({
